@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Logowanie</title>
+    <style>
+        /* Stylizacja w ciemnym motywie */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            margin-top: 100px;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #666666;
+            border-radius: 3px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .form-group button {
+            padding: 5px 10px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Logowanie</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="email">Adres e-mail:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Hasło:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Zaloguj się</button>
+            </div>
+        </form>
+    </div>
+</body>
+    <script>
+        // Logika formularza logowania
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(this);
+            var email = formData.get("email");
+            var password = formData.get("password");
+
+            // Wywołanie odpowiedniego API za pomocą DRF (np. za pomocą fetch lub axios)
+            // Przetworzenie odpowiedzi i obsługa logiki logowania
+        });
+    </script>
+
+</html>

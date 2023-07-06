@@ -1,0 +1,53 @@
+{% include 'base.html' %}
+{% block content %}
+  <h1>Dashboard</h1>
+
+  <!-- Wykres ilości produktów w magazynie -->
+  <canvas id="stockChart"></canvas>
+
+  <!-- Inne statystyki i wykresy -->
+  <!-- Dodaj kolejne wykresy i statystyki na podstawie danych z context -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Pobierz dane dotyczące ilości produktów z magazynu
+    var stockData = JSON.parse('{{ stock_data_json|safe }}');
+
+    // Przekształć dane do formatu zrozumiałego przez Chart.js
+    var labels = stockData.map(function(item) {
+      return item.name;
+    });
+    var quantities = stockData.map(function(item) {
+      return item.stock_quantity;
+    });
+
+    // Utwórz wykres
+    var ctx = document.getElementById('stockChart').getContext('2d');
+    var chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Ilość w magazynie',
+          data: quantities,
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            precision: 0
+          }
+        }
+      }
+    });
+
+    // Dodaj inne wykresy i statystyki
+    // ...
+  });
+</script>
+{% endblock %}

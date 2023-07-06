@@ -1,0 +1,86 @@
+{% load rest_framework %}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Rejestracja</title>
+    <style>
+        /* Stylizacja w ciemnym motywie */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            margin-top: 100px;
+            padding: 20px;
+            background-color: #1e1e1e;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #666666;
+            border-radius: 3px;
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .form-group button {
+            padding: 5px 10px;
+            background-color: #ffffff;
+            color: #000000;
+            border: none;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Rejestracja</h2>
+
+        <!-- Registration form -->
+        <form id="register-form">
+            {% csrf_token %}
+          <input type="text" name="username" placeholder="Username">
+          <input type="email" name="email" placeholder="Email">
+          <input type="password" name="password" placeholder="Password">
+          <button type="submit">Register</button>
+        </form>
+    </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+  // Register form submission
+  document.getElementById("register-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    var formData = new FormData(this);
+    axios.post("/api/register/", formData)
+      .then(function(response) {
+        console.log(response.data);
+        // Handle successful registration, e.g., show success message
+      })
+      .catch(function(error) {
+        console.error(error.response.data);
+        // Handle registration error, e.g., display error message
+      });
+  });
+
+    </script>
+</body>
+</html>

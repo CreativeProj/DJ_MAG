@@ -1,0 +1,12 @@
+{% extends 'cart.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Usunięcie produktu z koszyka</h1>
+    <p>Czy na pewno chcesz usunąć ten produkt z koszyka?</p>
+    <form action="{% url 'magento_integration_app:delete-cart-item' item_id=item.id %}" method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Usuń</button>
+    </form>
+  </div>
+{% endblock %}

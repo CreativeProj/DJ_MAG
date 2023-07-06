@@ -1,0 +1,33 @@
+<!-- product_list.html -->
+{% include 'base.html' %}
+
+{% block content %}
+
+  <div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      {{ request.user }}
+      {% for product in products %}
+        <div class="col">
+          <div class="card">
+            <img src="" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ product.name }}</h5>
+              <p class="card-text">{{ product.description }}</p>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Cena: {{ product.price }}</li>
+                <li class="list-group-item">Dostępność: {% if product.available %}Dostępny{% else %}Niedostępny{% endif %}</li>
+                <li class="list-group-item">Ilość na stanie: {{ product.stock_quantity }}</li>
+              </ul>
+            </div>
+             <div class="card-footer">
+              <a href="{% url 'magento_integration_app:product-detail' product.id %}" class="btn btn-primary">Przejdź do szczegółów</a>
+              <button class="btn btn-success">Dodaj do koszyka</button>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p>Brak produktów do wyświetlenia.</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

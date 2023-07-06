@@ -1,0 +1,80 @@
+
+{% include 'base.html' with request_user=request.user %}
+{% block content %}
+  <div class="container">
+    <h1>Koszyk</h1>
+    <p><strong>Suma produktów:</strong> {{ total_price }}</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nazwa</th>
+          <th>Cena</th>
+          <th>Ilość</th>
+          <th>Usuń</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart_items %}
+          <tr>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.product_price }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#removeFromCartModal{{ item.id }}" onclick="confirmRemoveFromCart({{ item.id }})">Usuń</button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {% for item in cart_items %}
+    <div class="modal fade" id="removeFromCartModal{{ item.id }}" tabindex="-1" aria-labelledby="removeFromCartModalLabel{{ item.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="removeFromCartModalLabel{{ item.id }}">Usuwanie produktu z koszyka</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Czy na pewno chcesz usunąć ten produkt z koszyka?</p>
+          </div>
+          <div class="modal-footer">
+            <form action="{% url 'magento_integration_app:delete-cart-item' cart_id=item.id %}" method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Usuń</button>
+            </form>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script>
+  function confirmRemoveFromCart(itemId) {
+    console.log(itemId);
+
+    // Wywołaj widok usuwania i przekaż identyfikator produktu
+    $.ajax({
+      url: `/cart_items/items/delete/${itemId}/`,
+      type: 'DELETE',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      success: function(response) {
+        // Jeśli usuwanie powiodło się
+        $('#removeFromCartModal' + itemId).modal('hide'); // Schowaj modal
+        location.reload(); // Odśwież stronę
+      },
+      error: function(xhr, status, error) {
+        // Jeśli wystąpił błąd, wyświetl komunikat
+        alert('Wystąpił błąd podczas usuwania produktu z koszyka.');
+      }
+    });
+  }
+</script>
+
+{% endblock %}

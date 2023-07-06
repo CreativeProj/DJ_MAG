@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load navbar_tags %}
+
+{% head %}
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">Twój Sklep</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Kategorie
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="#">Kategoria 1</a>
+            <a class="dropdown-item" href="#">Kategoria 2</a>
+            <a class="dropdown-item" href="#">Kategoria 3</a>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Oferty</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'magento_integration_app:cart' request.user.customer %}">Koszyk</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Zalogowany użytkownik: {{ request_user }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+</body>
+
+</html>

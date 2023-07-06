@@ -1,0 +1,89 @@
+<!-- product_list.html -->
+{% include 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid">
+      </div>
+      <div class="col-md-8">
+        <h1>{{ product.name }}</h1>
+        <p class="lead">{{ product.description }}</p>
+        <ul>
+          <li><strong>Cena:</strong> {{ product.price }}</li>
+          <li><strong>Dostępność:</strong> {% if product.available %}Dostępny{% else %}Niedostępny{% endif %}</li>
+          <li><strong>Ilość na stanie:</strong> {{ product.stock_quantity }}</li>
+          <li><strong>Magento SKU:</strong> {{ product.magento_sku }}</li>
+        </ul>
+        <div class="mt-4">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <button class="btn btn-secondary" type="button" id="decrease-quantity-btn">-</button>
+          </div>
+          <input id="quantity-input" class="form-control quantity-input" value="1" min="1" max="{{ product.stock_quantity }}">
+          <div class="input-group-append">
+            <button class="btn btn-secondary" type="button" id="increase-quantity-btn">+</button>
+          </div>
+        </div>
+        <div class="mt-4">
+          <a href="{% url 'magento_integration_app:product-list' %}" class="btn btn-primary">Powrót do listy produktów</a>
+          <button class="btn btn-success" id="add-to-cart-btn" data-product-sku="{{ product.magento_sku }}">Dodaj do koszyka</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // Obsługa kliknięcia przycisku "Dodaj do koszyka"
+      $("#add-to-cart-btn").click(function() {
+        var productSku = $(this).data("product-sku");
+        var quantity = $("#quantity-input").val();
+
+        // Wywołaj endpoint API do dodawania produktu do koszyka
+        $.ajax({
+          url: "{% url 'magento_integration_app:add-to-cart' %}",
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          data: {
+            magento_sku: productSku,
+            quantity: quantity
+          },
+          success: function(response) {
+            // Obsłuż odpowiedź sukcesu
+            console.log(response.success);
+          },
+          error: function(xhr, status, error) {
+            // Obsłuż błąd
+            console.error(xhr.responseText);
+          }
+        });
+      });
+
+      $("#decrease-quantity-btn").click(function() {
+        var quantityInput = $("#quantity-input");
+        var quantity = parseInt(quantityInput.val());
+
+        if (quantity > 1) {
+          quantityInput.val(quantity - 1);
+        }
+      });
+
+      $("#increase-quantity-btn").click(function() {
+        var quantityInput = $("#quantity-input");
+        var quantity = parseInt(quantityInput.val());
+        var stockQuantity = parseInt("{{ product.stock_quantity }}");
+
+
+        if (quantity < stockQuantity) {
+            quantityInput.val(quantity + 1);
+          }
+        });
+      });
+  </script>
+{% endblock %}
